@@ -1,0 +1,154 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "A scenic view of a clean, green village in Telangana.",
+      "imageUrl": "https://images.unsplash.com/photo-1591883093451-83abd0f56a1f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx0ZWxhbmdhbmElMjB2aWxsYWdlfGVufDB8fHx8MTc2MDc1NTk4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "telangana village"
+    },
+    {
+      "id": "cdma-logo",
+      "description": "The official logo for CDMA.",
+      "imageUrl": "https://emunicipal.telangana.gov.in/images/cdma-logo.png",
+      "imageHint": "cdma logo"
+    },
+    {
+      "id": "event-1",
+      "description": "Inauguration of a new community hall by local officials.",
+      "imageUrl": "https://images.unsplash.com/photo-1669114227772-05426e11c1cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxyaWJib24lMjBjdXR0aW5nfGVufDB8fHx8MTc2MDc1NTk4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "ribbon cutting"
+    },
+    {
+      "id": "event-2",
+      "description": "A health camp being organized for villagers.",
+      "imageUrl": "https://images.unsplash.com/photo-1631507623095-c710d184498f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtZWRpY2FsJTIwY2FtcHxlbnwwfHx8fDE3NjA3NTU5ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "medical camp"
+    },
+    {
+      "id": "event-3",
+      "description": "Distribution of saplings for a tree plantation drive.",
+      "imageUrl": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0cmVlJTIwcGxhbnRhdGlvbnxlbnwwfHx8fDE3NjA3NTU5ODF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tree plantation"
+    },
+    {
+      "id": "event-4",
+      "description": "School children participating in a cultural event.",
+      "imageUrl": "https://images.unsplash.com/photo-1581726690015-c9861fa5057f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzY2hvb2wlMjBjaGlsZHJlbnxlbnwwfHx8fDE3NjA3NTU5ODF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "school children"
+    },
+    {
+      "id": "mayor",
+      "description": "Official portrait of the Mayor.",
+      "imageUrl": "https://images.unsplash.com/photo-1736939678218-bd648b5ef3bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmZW1hbGUlMjBvZmZpY2lhbHxlbnwwfHx8fDE3NjA3NTYyOTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "female official"
+    },
+    {
+      "id": "commissioner",
+      "description": "Official portrait of the Commissioner.",
+      "imageUrl": "https://images.unsplash.com/photo-1751785407848-f7be1c93b833?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bWFsZSUyMG9mZmljaWFsfGVufDB8fHx8MTc2MDc1NjI5MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "male official"
+    },
+    {
+      "id": "collector",
+      "description": "Official portrait of the Collector.",
+      "imageUrl": "https://images.unsplash.com/photo-1573497019236-17f8177b81e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmZW1hbGUlMjBwcm9mZXNzaW9uYWx8ZW58MHx8fHwxNzYwNzUwNjI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "female professional"
+    },
+    {
+      "id": "project-led-1",
+      "description": "A newly installed LED street light illuminating a street at night.",
+      "imageUrl": "https://images.unsplash.com/photo-1560692659-467e4f0f3deb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzdHJlZXQlMjBsaWdodHxlbnwwfHx8fDE3NjA3NjQzMDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "street light"
+    },
+    {
+      "id": "project-led-2",
+      "description": "A close-up of a modern LED light fixture.",
+      "imageUrl": "https://images.unsplash.com/photo-1576422751437-97c1d97b940a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxMRUQlMjBsaWdodHxlbnwwfHx8fDE3NjA3NjQzMDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "LED light"
+    },
+    {
+      "id": "project-sanitation-1",
+      "description": "A municipal sanitation vehicle on its collection route.",
+      "imageUrl": "https://images.unsplash.com/photo-1597266673731-5f89216cf5e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z2FyYmFnZSUyMHRydWNrfGVufDB8fHx8MTc2MDc2NDMwN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "garbage truck"
+    },
+    {
+      "id": "project-sanitation-2",
+      "description": "Workers repairing a sanitation vehicle in a workshop.",
+      "imageUrl": "https://images.unsplash.com/photo-1672844719312-8c10cb7b0c5e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx2ZWhpY2xlJTIwcmVwYWlyfGVufDB8fHx8MTc2MDc2NDMwN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "vehicle repair"
+    },
+    {
+      "id": "project-safety-1",
+      "description": "Sanitation workers using new safety equipment.",
+      "imageUrl": "https://images.unsplash.com/photo-1516223834661-f75a4b900f59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzYWZldHklMjBnZWFyfGVufDB8fHx8MTc2MDczNzMzNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "safety gear"
+    },
+    {
+      "id": "project-safety-2",
+      "description": "A new JCB or dozer machine acquired by the municipality.",
+      "imageUrl": "https://images.unsplash.com/photo-1637669886956-bf0e1cc4f0d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxleGNhdmF0b3J8ZW58MHx8fHwxNzYwNzY0MzA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "excavator"
+    },
+    {
+      "id": "project-water-1",
+      "description": "Engineers working on a major water pipeline.",
+      "imageUrl": "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3YXRlciUyMHBpcGV8ZW58MHx8fHwxNzYwNzY0MzA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "water pipe"
+    },
+    {
+      "id": "project-water-2",
+      "description": "A water tanker supplying water to a residential area.",
+      "imageUrl": "https://images.unsplash.com/photo-1716576679755-61fcdcdb7abb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d2F0ZXIlMjB0YW5rZXJ8ZW58MHx8fHwxNzYwNzY0MzA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "water tanker"
+    },
+    {
+      "id": "project-pump-1",
+      "description": "A community member using a newly repaired hand pump.",
+      "imageUrl": "https://images.unsplash.com/photo-1683276039687-e0ee802a3d14?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoYW5kJTIwcHVtcHxlbnwwfHx8fDE3NjA3NjQzMDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hand pump"
+    },
+    {
+      "id": "project-pump-2",
+      "description": "A mechanic working on the internal mechanism of a hand pump.",
+      "imageUrl": "https://images.unsplash.com/photo-1613206485381-b028e578e791?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxtZWNoYW5pY3xlbnwwfHx8fDE3NjA3NjQzMDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mechanic"
+    },
+    {
+      "id": "project-motor-1",
+      "description": "A large electric motor for a water pump being installed.",
+      "imageUrl": "https://images.unsplash.com/photo-1691315038766-3d239bb97e16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxlbGVjdHJpYyUyMG1vdG9yfGVufDB8fHx8MTc2MDc2NDMwN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "electric motor"
+    },
+    {
+      "id": "project-motor-2",
+      "description": "An electrician rewinding the coils of a submersible motor.",
+      "imageUrl": "https://images.unsplash.com/photo-1683295083329-4d4738291f3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxlbGVjdHJpY2lhbnxlbnwwfHx8fDE3NjA3NjQzMDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "electrician"
+    },
+    {
+      "id": "project-submersible-1",
+      "description": "A new submersible pump set ready for installation.",
+      "imageUrl": "https://images.unsplash.com/photo-1700318092011-6e4666e94ab5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXRlciUyMHB1bXB8ZW58MHx8fHwxNzYwNzUzMzU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "water pump"
+    },
+    {
+      "id": "project-submersible-2",
+      "description": "Spare parts and components for pump maintenance.",
+      "imageUrl": "https://images.unsplash.com/photo-1632496497047-706290273235?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzcGFyZSUyMHBhcnRzfGVufDB8fHx8MTc2MDc2NDMwN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "spare parts"
+    },
+    {
+      "id": "project-plantation-1",
+      "description": "Saplings planted along a road median.",
+      "imageUrl": "https://images.unsplash.com/photo-1706239373949-6ad867c09900?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzYXBsaW5ncyUyMHJvYWR8ZW58MHx8fHwxNzYwNzY0MzA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "saplings road"
+    },
+    {
+      "id": "project-plantation-2",
+      "description": "A lush green median beautifying a city road.",
+      "imageUrl": "https://images.unsplash.com/photo-1461907781792-c8530f80a0f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxncmVlbiUyMG1lZGlhbnxlbnwwfHx8fDE3NjA3NjQzMDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "green median"
+    }
+  ]
+}
