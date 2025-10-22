@@ -11,36 +11,6 @@ export type NavItem = {
   description?: string;
   icon?: any;
   children?: NavItem[];
-
-// Default export required by Next.js App Router for generating /sitemap.xml
-// We derive internal URLs from the above sitemap structure. External links are ignored.
-export default function sitemapXml(): MetadataRoute.Sitemap {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "") || "https://edhulapuram.example.com";
-
-  const urls = new Set<string>();
-
-  function walk(items: NavItem[]) {
-    for (const item of items) {
-      if (item.href && !item.external && !/^https?:\/\//i.test(item.href)) {
-        urls.add(item.href);
-      }
-      if (item.children && item.children.length) walk(item.children);
-    }
-  }
-
-  walk(sitemap);
-
-  // Always include home
-  urls.add("/");
-
-  const now = new Date();
-  return Array.from(urls).map((path) => ({
-    url: `${base}${path.startsWith("/") ? path : `/${path}`}`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: path === "/" ? 1 : 0.7,
-  }));
-}
 };
 
 export const sitemap: NavItem[] = [
@@ -205,3 +175,33 @@ export const sitemap: NavItem[] = [
     href: "/contact",
   },
 ];
+
+// Default export required by Next.js App Router for generating /sitemap.xml
+// We derive internal URLs from the above sitemap structure. External links are ignored.
+export default function sitemapXml(): MetadataRoute.Sitemap {
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "") || "https://edhulapuram.example.com";
+
+  const urls = new Set<string>();
+
+  function walk(items: NavItem[]) {
+    for (const item of items) {
+      if (item.href && !item.external && !/^https?:\/\//i.test(item.href)) {
+        urls.add(item.href);
+      }
+      if (item.children && item.children.length) walk(item.children);
+    }
+  }
+
+  walk(sitemap);
+
+  // Always include home
+  urls.add("/");
+
+  const now = new Date();
+  return Array.from(urls).map((path) => ({
+    url: `${base}${path.startsWith("/") ? path : `/${path}`}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: path === "/" ? 1 : 0.7,
+  }));
+}
