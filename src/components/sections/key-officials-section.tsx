@@ -1,24 +1,39 @@
 import Image from "next/image";
-import {
-  Card,
-  CardContent
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { keyOfficialsData } from "@/app/content/data";
+import { getKeyOfficials } from "@/lib/supabase/queries";
 
-export function KeyOfficialsSection() {
+export async function KeyOfficialsSection() {
+  const rows = await getKeyOfficials();
+  const data = rows.length
+    ? {
+        title: keyOfficialsData.title,
+        subtitle: keyOfficialsData.subtitle,
+        officials: rows.map((r) => ({
+          id: r.id as string,
+          imageUrl: (r as any).image_url ?? "",
+          description: (r as any).description ?? r.designation ?? r.name,
+          imageHint: (r as any).image_hint ?? undefined,
+          name: r.name as string,
+          designation: r.designation as string,
+          bio: (r as any).description ?? null,
+        })),
+      }
+    : keyOfficialsData;
+
   return (
     <section>
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-            {keyOfficialsData.title}
+            {data.title}
           </h2>
           <p className="mt-3 text-lg text-muted-foreground">
-            {keyOfficialsData.subtitle}
+            {data.subtitle}
           </p>
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {keyOfficialsData.officials.map((official, index) => (
+          {data.officials.map((official: any, index: number) => (
               <Card
                 key={official.id}
                 className="group fade-in-up transform-gpu overflow-hidden rounded-xl border-0 shadow-lg transition-all duration-500 hover:!opacity-100 hover:shadow-2xl"

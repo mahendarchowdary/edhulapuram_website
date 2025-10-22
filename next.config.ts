@@ -1,5 +1,12 @@
 import type {NextConfig} from 'next';
 
+// Derive Supabase storage hostname from env so Next/Image can allow it
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+let supabaseHost: string | undefined;
+try {
+  supabaseHost = new URL(supabaseUrl).hostname;
+} catch {}
+
 const nextConfig: NextConfig = {
   /* config options here */
   typescript: {
@@ -51,7 +58,10 @@ const nextConfig: NextConfig = {
         hostname: 'pbs.twimg.com',
         port: '',
         pathname: '/**',
-      }
+      },
+      ...(supabaseHost
+        ? [{ protocol: 'https' as const, hostname: supabaseHost, port: '', pathname: '/**' }]
+        : []),
     ],
   },
 };

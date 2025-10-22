@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Search,
+  Lock,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { siteConfig, headerData, keyOfficialsData, serviceLinks } from "@/app/content/data";
@@ -250,6 +251,17 @@ const TopBarContent = ({ currentLanguage, translate, services, themeOptions, act
             />
           ))}
         </div>
+
+        <div className="flex items-center">
+          <Link
+            href="/auth/sign-in"
+            aria-label="Admin Login"
+            title="Admin Login"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+          >
+            <Lock className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -259,7 +271,6 @@ const TopBarContent = ({ currentLanguage, translate, services, themeOptions, act
 
 export function Header() {
   // ... (rest of the code remains the same)
-  const [isHeaderVisible, setIsHeaderVisible] = useState(false);
   const { translate, currentLanguage } = useGoogleTranslate();
   const [activeThemeId, setActiveThemeId] = useState(themeOptions[0].id);
 
@@ -272,9 +283,7 @@ export function Header() {
     Android: "#3DDC84",
   };
 
-  useEffect(() => {
-    setIsHeaderVisible(true);
-  }, []);
+  // Removed header load animation
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -312,8 +321,7 @@ export function Header() {
   return (
     <>
       <header className={cn(
-        "relative w-full bg-white shadow-sm transition-all duration-300 z-40",
-        isHeaderVisible ? "header-load-animation" : "opacity-0 -translate-y-full"
+        "relative w-full bg-white shadow-sm z-40"
         )} id="main-header">
         <div className="bg-white text-foreground border-b">
           <div className="container flex h-12 items-center justify-between text-xs">

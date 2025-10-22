@@ -50,7 +50,7 @@ export function ServicesSection() {
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {servicesData.services.map((service) => {
-            const Icon = iconMap[service.icon as keyof typeof iconMap];
+            const Icon = iconMap[service.icon as keyof typeof iconMap] ?? Home;
             return (
               <a href={service.href} target="_blank" rel="noreferrer" key={service.title} className="group">
                 <Card className="h-full transform transition-transform duration-300 group-hover:-translate-y-2 group-hover:shadow-xl">

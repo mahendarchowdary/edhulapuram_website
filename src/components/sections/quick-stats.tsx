@@ -1,22 +1,27 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { quickStatsData } from "@/app/content/data";
-import { Users, Map as MapIcon, Waypoints, Lightbulb } from "lucide-react";
+import * as Lucide from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 
-const iconMap = {
-  Users: Users,
-  Map: MapIcon,
-  Waypoints: Waypoints,
-  Lightbulb: Lightbulb,
-};
+type Stat = { label: string; value: number; icon?: string };
+type QuickStatsProps = { stats?: Stat[] };
 
-export function QuickStats() {
+// Resolve an icon component by name from lucide-react
+function resolveIcon(name?: string) {
+  if (!name) return Lightbulb;
+  const key = name in Lucide ? (name as keyof typeof Lucide) : undefined;
+  return key ? (Lucide[key] as any) : Lightbulb;
+}
+
+export function QuickStats(props: QuickStatsProps) {
+  const stats = props.stats ?? quickStatsData.stats;
   return (
-    <section>
+    <section className="pt-6 pb-8 md:pt-8 md:pb-10">
       <div className="container">
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:gap-8">
-          {quickStatsData.stats.map((stat) => {
-            const Icon = iconMap[stat.icon as keyof typeof iconMap];
+          {stats.map((stat) => {
+            const Icon = resolveIcon(stat.icon);
             return (
               <Card key={stat.label} className="text-center">
                 <CardContent className="flex flex-col items-center justify-center p-6">

@@ -1,21 +1,19 @@
-import { HeroSection } from "@/components/sections/hero-section";
-import { NewsTicker } from "@/components/sections/news-ticker";
-import { QuickStats } from "@/components/sections/quick-stats";
+import { HeroSectionServer } from "@/components/sections/hero-section-server";
+import { QuickStatsServer } from "@/components/sections/quick-stats-server";
 import { ServicesSection } from "@/components/sections/services-section";
-import { EventsSection } from "@/components/sections/events-section";
-import { ProjectsSection } from "@/components/sections/projects-section";
+import { EventsSectionServer } from "@/components/sections/events-section-server";
+import { ProjectsSectionServer } from "@/components/sections/projects-section-server";
 import { KeyOfficialsSection } from "@/components/sections/key-officials-section";
 
 export default function Home() {
   return (
     <>
-      <HeroSection />
-      <NewsTicker />
-      <QuickStats />
+      <HeroSectionServer />
+      <QuickStatsServer />
       <ServicesSection />
       <KeyOfficialsSection />
-      <EventsSection />
-      <ProjectsSection />
+      <EventsSectionServer />
+      <ProjectsSectionServer />
     </>
   );
 }

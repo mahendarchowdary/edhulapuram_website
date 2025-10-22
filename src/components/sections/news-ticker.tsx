@@ -4,20 +4,28 @@ import { newsTickerData } from "@/app/content/data";
 import { Megaphone, Languages } from "lucide-react";
 import { useState } from "react";
 
-export function NewsTicker() {
+type NewsItem = { en: string; te?: string };
+type NewsTickerProps = {
+  title?: { en: string; te?: string };
+  news?: NewsItem[];
+};
+
+export function NewsTicker(props: NewsTickerProps) {
   const [language, setLanguage] = useState<"en" | "te">("en");
-  const duplicatedNews = [...newsTickerData.news, ...newsTickerData.news];
+  const title = props.title ?? newsTickerData.title;
+  const items = props.news ?? newsTickerData.news;
+  const duplicatedNews = [...items, ...items];
 
   return (
     <div className="w-full border-y bg-card py-2">
       <div className="container flex flex-wrap items-center gap-3 sm:gap-4">
-        <div className="flex shrink-0 items-center gap-2 sm:pr-4">
+        <div className="flex shrink-0 items-center gap-2 pr-2 sm:pr-3">
           <Megaphone className="h-5 w-5 text-accent" />
-          <span className="font-bold text-sm">
-            {newsTickerData.title[language]}:
+          <span className="text-sm font-bold tracking-wide text-foreground">
+            {(title as any)[language] ?? title.en}:
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pr-2 sm:pr-4">
           <Languages className="h-4 w-4 text-muted-foreground" />
           <div className="flex items-center gap-1">
             <button
@@ -44,14 +52,14 @@ export function NewsTicker() {
             </button>
           </div>
         </div>
-        <div className="relative flex-1 min-w-[200px] overflow-hidden">
-          <div className="flex ticker-container">
+        <div className="relative flex min-w-[240px] flex-1 items-center overflow-hidden">
+          <div className="flex ticker-container text-sm font-medium text-foreground/90">
             {duplicatedNews.map((news, index) => (
               <p
                 key={index}
-                className="whitespace-nowrap px-6 text-sm text-muted-foreground"
+                className="whitespace-nowrap px-6"
               >
-                {news[language]}
+                {(news as any)[language] ?? news.en}
               </p>
             ))}
           </div>

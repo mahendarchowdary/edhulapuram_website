@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/layout/header";
+import { NewsTickerServer } from "@/components/sections/news-ticker-server";
 import { MainNav } from "@/components/layout/main-nav";
 import { Footer } from "@/components/layout/footer";
 import { GoogleTranslateProvider } from "@/components/providers/google-translate-provider";
@@ -38,6 +39,7 @@ export default function RootLayout({
         <GoogleTranslateProvider>
           <div className="relative flex min-h-dvh flex-col">
             <Header />
+            <NewsTickerServer />
             <MainNav />
             <main className="flex-1" id="main-content">{children}</main>
             <Footer />

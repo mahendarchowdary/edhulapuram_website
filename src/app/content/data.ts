@@ -58,6 +58,10 @@ export const navigationData: NavigationItem[] = [
     icon: "Home",
   },
   {
+    label: "Staff & Contacts",
+    href: "/staff",
+  },
+  {
     label: "Citizen Services",
     groups: [
       {
