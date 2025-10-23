@@ -253,9 +253,10 @@ const TopBarContent = ({ currentLanguage, translate, services, themeOptions, act
         </div>
 
         <div className="flex items-center">
-          <span
-            aria-label="status"
-            title="Status"
+          <Link
+            href="/auth/sign-in"
+            aria-label="Admin"
+            title="Admin"
             className="inline-block h-3.5 w-3.5 rounded-full bg-emerald-500 ring-2 ring-white shadow-sm"
           />
         </div>

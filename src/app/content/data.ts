@@ -165,10 +165,6 @@ export const navigationData: NavigationItem[] = [
     href: "/coming-soon",
   },
   {
-    label: "Contact Us",
-    href: "/contact",
-  },
-  {
     label: "About Municipality",
     href: "/about",
   },

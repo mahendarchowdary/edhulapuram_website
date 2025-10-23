@@ -203,6 +203,16 @@ export function MainNav() {
               </li>
             );
           })}
+          {/* Admin green dot at the end (after About Municipality) */}
+          <li key="admin-dot-end">
+            <Link
+              href="/auth/sign-in"
+              aria-label="Admin"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-white shadow-sm transition-all hover:scale-105 hover:bg-white/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              <span className="inline-block h-3.5 w-3.5 rounded-full bg-emerald-400 ring-2 ring-white" />
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>
