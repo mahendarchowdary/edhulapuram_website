@@ -49,18 +49,19 @@ export const revalidate = 0;
 export default async function ProjectDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const supabase = await getServerSupabaseClient();
   const { data: project, error } = await supabase
     .from("projects")
     .select("id, slug, name, description, cost, completion, status, timeline, icon")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .single();
   let proj = project as any | null;
   if (error || !project) {
     // Fallback 1: try decoded slug
-    const decoded = decodeURIComponent(params.slug);
+    const decoded = decodeURIComponent(slug);
     const { data: alt1 } = await supabase
       .from("projects")
       .select("id, slug, name, description, cost, completion, status, timeline, icon")
@@ -70,7 +71,7 @@ export default async function ProjectDetailPage({
   }
   if (!proj) {
     // Fallback 2: try replacing hyphens with spaces (legacy slugs)
-    const spaced = params.slug.replace(/-/g, " ");
+    const spaced = slug.replace(/-/g, " ");
     const { data: alt2 } = await supabase
       .from("projects")
       .select("id, slug, name, description, cost, completion, status, timeline, icon")
