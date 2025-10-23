@@ -21,8 +21,7 @@ async function fetchHero() {
 
 async function fetchSlides(includeDeleted: boolean) {
   const supabase = await getServerSupabaseClient();
-  const sb: any = supabase as any;
-  let q = sb
+  let q = (supabase as any)
     .from("hero_slides")
     .select("id,image_url,alt,position,is_enabled,deleted_at,updated_at")
     .order("position", { ascending: true });
@@ -86,7 +85,6 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
     if (!hero_id || !text || !href) return redirect("/admin/hero?error=" + encodeURIComponent("Text and link required"));
     try {
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
-      const sb: any = supabase as any;
       const { data: maxRows } = await supabase
         .from("hero_ctas")
         .select("position")
@@ -165,8 +163,7 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
     const file = formData.get("image_file") as File | null;
     try {
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
-      const sb: any = supabase as any;
-      const { data: maxRows } = await sb
+      const { data: maxRows } = await (supabase as any)
         .from("hero_slides")
         .select("position")
         .order("position", { ascending: false })
@@ -193,7 +190,7 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
         }
       }
 
-      await sb.from("hero_slides").insert({ image_url, alt: altRaw || null, position: nextPos, is_enabled: true });
+      await (supabase as any).from("hero_slides").insert({ image_url, alt: altRaw || null, position: nextPos, is_enabled: true });
       revalidatePath("/admin/hero");
       revalidatePath("/");
       redirect("/admin/hero?success=Slide%20created");
@@ -214,8 +211,7 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
     }
     try {
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
-      const sb: any = supabase as any;
-      await sb.from("hero_slides").update({ alt: altRaw, is_enabled: enabled, image_url }).eq("id", id);
+      await (supabase as any).from("hero_slides").update({ alt: altRaw, is_enabled: enabled, image_url }).eq("id", id);
       revalidatePath("/admin/hero");
       revalidatePath("/");
       redirect("/admin/hero?success=Slide%20updated");
@@ -240,7 +236,7 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
         .upload(`hero/${fileName}`, buf, { contentType: file.type || `image/${ext}`, upsert: false });
       if (uploaded?.path) {
         const { data: pub } = supabase.storage.from("edhulapuram").getPublicUrl(uploaded.path);
-        await sb.from("hero_slides").update({ image_url: pub.publicUrl }).eq("id", id);
+        await (supabase as any).from("hero_slides").update({ image_url: pub.publicUrl }).eq("id", id);
       }
       revalidatePath("/admin/hero");
       revalidatePath("/");
@@ -254,8 +250,7 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
     "use server";
     try {
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
-      const sb: any = supabase as any;
-      await sb.from("hero_slides").update({ deleted_at: new Date().toISOString() as any }).eq("id", id);
+      await (supabase as any).from("hero_slides").update({ deleted_at: new Date().toISOString() as any }).eq("id", id);
       revalidatePath("/admin/hero");
       revalidatePath("/");
       redirect("/admin/hero?success=Slide%20deleted");
@@ -268,8 +263,7 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
     "use server";
     try {
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
-      const sb: any = supabase as any;
-      await sb.from("hero_slides").update({ deleted_at: null as any }).eq("id", id);
+      await (supabase as any).from("hero_slides").update({ deleted_at: null as any }).eq("id", id);
       revalidatePath("/admin/hero");
       revalidatePath("/");
       redirect("/admin/hero?success=Slide%20restored");
@@ -282,8 +276,7 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
     "use server";
     try {
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
-      const sb: any = supabase as any;
-      const { data: rows } = await sb
+      const { data: rows } = await (supabase as any)
         .from("hero_slides")
         .select("id,position")
         .is("deleted_at", null)
@@ -296,8 +289,8 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
       if (swapIdx < 0 || swapIdx >= list.length) return;
       const a = list[idx]!;
       const b = list[swapIdx]!;
-      await sb.from("hero_slides").update({ position: b.position }).eq("id", a.id);
-      await sb.from("hero_slides").update({ position: a.position }).eq("id", b.id);
+      await (supabase as any).from("hero_slides").update({ position: b.position }).eq("id", a.id);
+      await (supabase as any).from("hero_slides").update({ position: a.position }).eq("id", b.id);
       revalidatePath("/admin/hero");
       revalidatePath("/");
       redirect("/admin/hero?success=Order%20updated");

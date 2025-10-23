@@ -134,7 +134,7 @@ export default async function AdminKeyOfficialsPage({ searchParams }: { searchPa
     "use server";
     try {
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
-      await supabase.from("key_officials").update({ deleted_at: new Date().toISOString() as any }).eq("id", id);
+      await (supabase as any).from("key_officials").update({ deleted_at: new Date().toISOString() as any }).eq("id", id);
       revalidatePath("/admin/key-officials");
       revalidatePath("/");
       redirect("/admin/key-officials?success=Official%20deleted");
@@ -148,7 +148,7 @@ export default async function AdminKeyOfficialsPage({ searchParams }: { searchPa
     "use server";
     try {
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
-      await supabase.from("key_officials").update({ deleted_at: null as any }).eq("id", id);
+      await (supabase as any).from("key_officials").update({ deleted_at: null as any }).eq("id", id);
       revalidatePath("/admin/key-officials");
       revalidatePath("/");
       redirect("/admin/key-officials?success=Official%20restored");
