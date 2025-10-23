@@ -139,13 +139,13 @@ export async function getHeroSlides() {
 
 export async function getKeyOfficials() {
   const supabase = getServiceSupabaseClient();
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("key_officials")
     .select("id,name,designation,description,image_url,position,deleted_at")
     .is("deleted_at", null)
     .order("position", { ascending: true });
   if (error) throw error;
-  return data ?? [];
+  return (data as any[]) ?? [];
 }
 
 export async function getEvents() {
