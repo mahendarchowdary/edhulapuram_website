@@ -288,13 +288,14 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
         .select("id,position")
         .is("deleted_at", null)
         .order("position", { ascending: true });
-      if (!rows) return;
-      const idx = rows.findIndex((r) => r.id === id);
+      const list: Array<{ id: string; position: number | null }> = (rows as any[]) ?? [];
+      if (list.length === 0) return;
+      const idx = list.findIndex((r: { id: string }) => r.id === id);
       if (idx < 0) return;
       const swapIdx = dir === "up" ? idx - 1 : idx + 1;
-      if (swapIdx < 0 || swapIdx >= rows.length) return;
-      const a = rows[idx];
-      const b = rows[swapIdx];
+      if (swapIdx < 0 || swapIdx >= list.length) return;
+      const a = list[idx]!;
+      const b = list[swapIdx]!;
       await sb.from("hero_slides").update({ position: b.position }).eq("id", a.id);
       await sb.from("hero_slides").update({ position: a.position }).eq("id", b.id);
       revalidatePath("/admin/hero");
