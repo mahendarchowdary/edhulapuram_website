@@ -1,3 +1,4 @@
+export const revalidate = 0;
 import { HeroSectionServer } from "@/components/sections/hero-section-server";
 import { QuickStatsServer } from "@/components/sections/quick-stats-server";
 import { ServicesSection } from "@/components/sections/services-section";

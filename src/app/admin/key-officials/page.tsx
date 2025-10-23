@@ -66,6 +66,7 @@ export default async function AdminKeyOfficialsPage({ searchParams }: { searchPa
 
       await supabase.from("key_officials").insert({ name, designation, description, image_url, position: nextPos });
       revalidatePath("/admin/key-officials");
+      revalidatePath("/");
       redirect("/admin/key-officials?success=Official%20created");
     } catch (e: any) {
       const msg = encodeURIComponent(e?.message ?? "Create failed");
@@ -95,6 +96,7 @@ export default async function AdminKeyOfficialsPage({ searchParams }: { searchPa
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
       await supabase.from("key_officials").update({ name, designation, description, image_url }).eq("id", id);
       revalidatePath("/admin/key-officials");
+      revalidatePath("/");
       redirect("/admin/key-officials?success=Official%20updated");
     } catch (e: any) {
       const msg = encodeURIComponent(e?.message ?? "Update failed");
@@ -120,6 +122,7 @@ export default async function AdminKeyOfficialsPage({ searchParams }: { searchPa
         await supabase.from("key_officials").update({ image_url: pub.publicUrl }).eq("id", id);
       }
       revalidatePath("/admin/key-officials");
+      revalidatePath("/");
       redirect("/admin/key-officials?success=Image%20updated");
     } catch (e: any) {
       const msg = encodeURIComponent(e?.message ?? "Upload failed");
@@ -133,6 +136,7 @@ export default async function AdminKeyOfficialsPage({ searchParams }: { searchPa
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
       await supabase.from("key_officials").update({ deleted_at: new Date().toISOString() as any }).eq("id", id);
       revalidatePath("/admin/key-officials");
+      revalidatePath("/");
       redirect("/admin/key-officials?success=Official%20deleted");
     } catch (e: any) {
       const msg = encodeURIComponent(e?.message ?? "Delete failed");
@@ -146,6 +150,7 @@ export default async function AdminKeyOfficialsPage({ searchParams }: { searchPa
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
       await supabase.from("key_officials").update({ deleted_at: null as any }).eq("id", id);
       revalidatePath("/admin/key-officials");
+      revalidatePath("/");
       redirect("/admin/key-officials?success=Official%20restored");
     } catch (e: any) {
       const msg = encodeURIComponent(e?.message ?? "Restore failed");
@@ -172,6 +177,7 @@ export default async function AdminKeyOfficialsPage({ searchParams }: { searchPa
       await supabase.from("key_officials").update({ position: b.position }).eq("id", a.id);
       await supabase.from("key_officials").update({ position: a.position }).eq("id", b.id);
       revalidatePath("/admin/key-officials");
+      revalidatePath("/");
       redirect("/admin/key-officials?success=Order%20updated");
     } catch (e: any) {
       const msg = encodeURIComponent(e?.message ?? "Reorder failed");

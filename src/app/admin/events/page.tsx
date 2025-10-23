@@ -52,6 +52,8 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
 
     await supabase.from("events").insert({ title, event_date, description, cover_image_url, position: nextPos });
     revalidatePath("/admin/events");
+    revalidatePath("/");
+    revalidatePath("/events");
     redirect("/admin/events?success=Event%20created");
   }
 
@@ -60,6 +62,8 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     await supabase.from("events").delete().eq("id", id);
     revalidatePath("/admin/events");
+    revalidatePath("/");
+    revalidatePath("/events");
     redirect("/admin/events?success=Event%20deleted");
   }
 
@@ -77,6 +81,8 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
     await supabase.from("events").update({ position: b.position }).eq("id", a.id);
     await supabase.from("events").update({ position: a.position }).eq("id", b.id);
     revalidatePath("/admin/events");
+    revalidatePath("/");
+    revalidatePath("/events");
     redirect("/admin/events?success=Order%20updated");
   }
 
@@ -91,6 +97,8 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     await supabase.from("events").update({ title, event_date, description, cover_image_url }).eq("id", id);
     revalidatePath("/admin/events");
+    revalidatePath("/");
+    revalidatePath("/events");
     redirect("/admin/events?success=Event%20updated");
   }
 
@@ -112,6 +120,8 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
     const { data: pub } = supabase.storage.from("edhulapuram").getPublicUrl(uploaded.path);
     await supabase.from("events").update({ cover_image_url: pub.publicUrl }).eq("id", id);
     revalidatePath("/admin/events");
+    revalidatePath("/");
+    revalidatePath("/events");
     redirect("/admin/events?success=Cover%20updated");
   }
 

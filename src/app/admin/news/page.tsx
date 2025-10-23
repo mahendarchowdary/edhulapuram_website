@@ -32,6 +32,8 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Pr
     const nextPos = (maxRows?.[0]?.position ?? 0) + 1;
     await supabase.from("news_items").insert({ title_en, title_te, position: nextPos, is_published: true });
     revalidatePath("/admin/news");
+    revalidatePath("/");
+    revalidatePath("/news");
     redirect("/admin/news?success=News%20created");
   }
 
@@ -40,6 +42,8 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Pr
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     await supabase.from("news_items").update({ is_published: !is_published }).eq("id", id);
     revalidatePath("/admin/news");
+    revalidatePath("/");
+    revalidatePath("/news");
     redirect("/admin/news?success=Publish%20toggled");
   }
 
@@ -48,6 +52,8 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Pr
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     await supabase.from("news_items").delete().eq("id", id);
     revalidatePath("/admin/news");
+    revalidatePath("/");
+    revalidatePath("/news");
     redirect("/admin/news?success=News%20deleted");
   }
 
@@ -68,6 +74,8 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Pr
     await supabase.from("news_items").update({ position: b.position }).eq("id", a.id);
     await supabase.from("news_items").update({ position: a.position }).eq("id", b.id);
     revalidatePath("/admin/news");
+    revalidatePath("/");
+    revalidatePath("/news");
     redirect("/admin/news?success=Order%20updated");
   }
 
@@ -80,6 +88,8 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Pr
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     await supabase.from("news_items").update({ title_en, title_te }).eq("id", id);
     revalidatePath("/admin/news");
+    revalidatePath("/");
+    revalidatePath("/news");
     redirect("/admin/news?success=News%20updated");
   }
 

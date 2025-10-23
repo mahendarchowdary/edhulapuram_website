@@ -253,14 +253,11 @@ const TopBarContent = ({ currentLanguage, translate, services, themeOptions, act
         </div>
 
         <div className="flex items-center">
-          <Link
-            href="/auth/sign-in"
-            aria-label="Admin Login"
-            title="Admin Login"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
-          >
-            <Lock className="h-4 w-4" />
-          </Link>
+          <span
+            aria-label="status"
+            title="Status"
+            className="inline-block h-3.5 w-3.5 rounded-full bg-emerald-500 ring-2 ring-white shadow-sm"
+          />
         </div>
       </div>
     </div>
