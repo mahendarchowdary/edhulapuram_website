@@ -165,7 +165,8 @@ export default async function AdminHeroPage({ searchParams }: { searchParams: Pr
     const file = formData.get("image_file") as File | null;
     try {
       const supabase = getServiceSupabaseClient({ useServiceRole: true });
-      const { data: maxRows } = await supabase
+      const sb: any = supabase as any;
+      const { data: maxRows } = await sb
         .from("hero_slides")
         .select("position")
         .order("position", { ascending: false })
