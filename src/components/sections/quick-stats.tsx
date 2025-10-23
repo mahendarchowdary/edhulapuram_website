@@ -23,7 +23,7 @@ export function QuickStats(props: QuickStatsProps) {
           {stats.map((stat, index) => {
             const Icon = resolveIcon(stat.icon);
             return (
-              <Card key={stat.id ?? `${stat.label}-${index}`} className="text-center">
+              <Card key={`${stat.label}-${index}`} className="text-center">
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <Icon className="h-10 w-10 text-primary mb-3" />
                   <p className="text-3xl font-bold md:text-4xl">
