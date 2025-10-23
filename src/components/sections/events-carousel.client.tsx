@@ -26,6 +26,8 @@ export type EventCard = {
 export function EventsCarouselClient({ events }: { events: EventCard[] }) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
+  // Track per-event fit mode determined at runtime based on image aspect ratio
+  const [fitMode, setFitMode] = React.useState<Record<string, 'cover' | 'contain'>>({});
   const plugin = React.useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
 
   React.useEffect(() => {
@@ -53,7 +55,7 @@ export function EventsCarouselClient({ events }: { events: EventCard[] }) {
             <div className={cn('p-1 transition-transform duration-500 ease-in-out', index === current ? 'scale-105' : 'scale-90 opacity-60')}>
               <Card>
                 <CardContent className="flex aspect-video flex-col items-start justify-end p-0">
-                  <div className="relative h-full w-full overflow-hidden rounded-lg bg-neutral-100">
+                  <div className="relative h-full w-full overflow-hidden rounded-lg bg-neutral-200">
                     {event.cover_image_url ? (
                       <>
                         {/* Background fill to avoid side gaps, using same image blurred */}
@@ -62,7 +64,7 @@ export function EventsCarouselClient({ events }: { events: EventCard[] }) {
                           className="absolute inset-0"
                         >
                           <div
-                            className="h-full w-full bg-center bg-cover blur-lg scale-110 opacity-60"
+                            className="h-full w-full bg-center bg-cover blur-md scale-110 opacity-40 saturate-150"
                             style={{ backgroundImage: `url(${event.cover_image_url})` }}
                           />
                         </div>
@@ -71,11 +73,16 @@ export function EventsCarouselClient({ events }: { events: EventCard[] }) {
                           src={event.cover_image_url}
                           alt={event.description ?? event.title}
                           fill
-                          className="object-contain transition-transform duration-300"
+                          className={`${fitMode[event.id] === 'cover' ? 'object-cover' : 'object-contain'} transition-transform duration-300`}
+                          onLoad={(e) => {
+                            const img = e.currentTarget as HTMLImageElement;
+                            const ratio = img.naturalWidth / img.naturalHeight;
+                            setFitMode((prev) => ({ ...prev, [event.id]: ratio >= 1.4 ? 'cover' : 'contain' }));
+                          }}
                         />
                       </>
                     ) : null}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent" />
                     <div className="absolute bottom-0 left-0 p-4 text-white">
                       <h3 className="text-lg font-bold">{event.title}</h3>
                       <div className="flex items-center text-xs text-gray-300 mt-1">

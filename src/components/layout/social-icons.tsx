@@ -1,8 +1,9 @@
 
-import { Facebook, Twitter, Youtube, Apple, Smartphone } from "lucide-react";
+import { Facebook, Twitter, Youtube, Apple, Smartphone, Instagram } from "lucide-react";
 
 export const socialIcons = {
   Facebook: () => <Facebook className="h-5 w-5" />,
+  Instagram: () => <Instagram className="h-5 w-5" />,
   Twitter: () => <Twitter className="h-5 w-5" />,
   Youtube: () => <Youtube className="h-5 w-5" />,
   Whatsapp: () => (

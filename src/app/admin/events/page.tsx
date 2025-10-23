@@ -109,13 +109,11 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
     if (!id || !file || file.size === 0) return;
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     try {
-      const arrayBuffer = await file.arrayBuffer();
-      const fileBytes = new Uint8Array(arrayBuffer);
       const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
       const fileName = `${crypto.randomUUID()}.${ext}`;
       const { data: uploaded, error: uploadErr } = await supabase.storage
         .from("edhulapuram")
-        .upload(`events/${fileName}`, fileBytes, {
+        .upload(`events/${fileName}`, file, {
           contentType: file.type || `image/${ext}`,
           upsert: false,
         });

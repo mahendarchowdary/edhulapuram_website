@@ -11,6 +11,8 @@ const links = [
   { href: "/admin/hero", label: "Hero" },
   { href: "/admin/key-officials", label: "Key Officials" },
   { href: "/admin/staff", label: "Staff" },
+  { href: "/admin/about", label: "About" },
+  { href: "/admin/socials", label: "Social Links" },
 ];
 
 export function AdminSidebar() {

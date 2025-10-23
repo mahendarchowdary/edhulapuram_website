@@ -1,6 +1,7 @@
 import { getServerSupabaseClient, getServiceSupabaseClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { IconPicker } from "@/components/admin/icon-picker.client";
 
 async function fetchStats() {
   const supabase = await getServerSupabaseClient();
@@ -23,15 +24,14 @@ export default async function AdminStatsPage({ searchParams }: { searchParams: P
     const valueStr = String(formData.get("value") ?? "").trim();
     const value = valueStr ? Number(valueStr) : null;
     const value_text = String(formData.get("value_text") ?? "").trim() || null;
-    const icon_select = String(formData.get("icon") ?? "").trim() || "Lightbulb";
-    const icon_custom = String(formData.get("icon_custom") ?? "").trim();
-    const icon = (icon_custom || icon_select) || "Lightbulb";
+    const icon = String(formData.get("icon") ?? "").trim() || "Lightbulb";
     if (!label) return;
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     const { data: maxRows } = await supabase.from("quick_stats").select("position").order("position", { ascending: false }).limit(1);
     const nextPos = (maxRows?.[0]?.position ?? 0) + 1;
     await supabase.from("quick_stats").insert({ label, value, value_text, icon, position: nextPos });
     revalidatePath("/admin/stats");
+    revalidatePath("/");
     redirect("/admin/stats?success=Stat%20created");
   }
 
@@ -40,6 +40,7 @@ export default async function AdminStatsPage({ searchParams }: { searchParams: P
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     await supabase.from("quick_stats").delete().eq("id", id);
     revalidatePath("/admin/stats");
+    revalidatePath("/");
     redirect("/admin/stats?success=Stat%20deleted");
   }
 
@@ -57,6 +58,7 @@ export default async function AdminStatsPage({ searchParams }: { searchParams: P
     await supabase.from("quick_stats").update({ position: b.position }).eq("id", a.id);
     await supabase.from("quick_stats").update({ position: a.position }).eq("id", b.id);
     revalidatePath("/admin/stats");
+    revalidatePath("/");
   }
 
   return (
@@ -75,21 +77,9 @@ export default async function AdminStatsPage({ searchParams }: { searchParams: P
           <input name="label" placeholder="Label" className="rounded border px-3 py-2" required />
           <input name="value" placeholder="Value (number)" className="rounded border px-3 py-2" />
           <input name="value_text" placeholder="Value text (optional)" className="rounded border px-3 py-2" />
-          <select name="icon" className="rounded border px-3 py-2">
-            <option value="Lightbulb">Lightbulb</option>
-            <option value="Users">Users</option>
-            <option value="Map">Map</option>
-            <option value="Waypoints">Waypoints</option>
-            <option value="Building">Building</option>
-            <option value="Home">Home</option>
-            <option value="Droplets">Droplets</option>
-            <option value="Store">Store</option>
-            <option value="Megaphone">Megaphone</option>
-            <option value="Signal">Signal</option>
-            <option value="Phone">Phone</option>
-            <option value="ShieldCheck">ShieldCheck</option>
-          </select>
-          <input name="icon_custom" placeholder="Or type a Lucide icon name" className="rounded border px-3 py-2" />
+          <div className="sm:col-span-2">
+            <IconPicker name="icon" label="Icon" />
+          </div>
           <button type="submit" className="rounded bg-primary px-4 py-2 text-white">Create</button>
         </div>
       </form>

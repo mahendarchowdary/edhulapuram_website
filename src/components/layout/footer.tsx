@@ -6,7 +6,30 @@ import Image from "next/image";
 import { headerData } from "@/app/content/data";
 
 
-export function Footer() {
+export function Footer({ socials }: { socials?: Array<{ name: string; icon: string; url: string }> }) {
+  function normalizeHref(raw: string) {
+    const t = (raw || "").trim();
+    if (!t) return "#";
+    if (/^https?:\/\//i.test(t)) return t;
+    return `https://${t}`;
+  }
+  const effectiveSocialsRaw: Array<{ name: string; icon: string; url: string }> = (socials && socials.length > 0 ? socials : siteConfig.socials) as any;
+  const desiredOrder = ["Facebook", "Instagram", "Twitter"] as const;
+  const effectiveSocials: Array<{ name: string; icon: string; url: string }> = (() => {
+    const seen = new Set<string>();
+    const out: Array<{ name: string; icon: string; url: string }> = [];
+    for (const s of effectiveSocialsRaw) {
+      const key = (s.name || "").trim().toLowerCase();
+      if (!key) continue;
+      if (seen.has(key)) continue;
+      const properName = s.name.trim();
+      if (!desiredOrder.includes(properName as any)) continue;
+      seen.add(key);
+      out.push({ ...s, name: properName });
+    }
+    out.sort((a, b) => desiredOrder.indexOf(a.name as any) - desiredOrder.indexOf(b.name as any));
+    return out;
+  })();
   return (
     <footer className="border-t bg-card">
       <div className="container py-12">
@@ -32,17 +55,26 @@ export function Footer() {
               Committed to the development and well-being of Edulapuram's citizens through technology and good governance.
             </p>
             <div className="mt-6 flex items-center gap-4">
-               {siteConfig.socials.slice(0,3).map((social) => {
-                 const Icon = socialIcons[social.name as keyof typeof socialIcons];
-                 return (
-                  <Link
-                    key={social.name}
-                    href={social.url}
+              {effectiveSocials.slice(0,3).map((social, idx) => {
+                const Icon = socialIcons[social.name as keyof typeof socialIcons];
+                const href = normalizeHref(social.url || "");
+                const hasUrl = !!(social.url && social.url.trim());
+                return hasUrl ? (
+                  <a
+                    key={`${social.name}-${idx}`}
+                    href={href}
                     className="text-muted-foreground hover:text-foreground"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <Icon />
                     <span className="sr-only">{social.name}</span>
-                  </Link>
+                  </a>
+                ) : (
+                  <span key={`${social.name}-${idx}`} className="text-muted-foreground/60" title={`${social.name} link not set`}>
+                    <Icon />
+                    <span className="sr-only">{social.name}</span>
+                  </span>
                 );
               })}
             </div>

@@ -8,6 +8,7 @@ export default function AdminHome() {
     { href: '/admin/staff', label: 'Staff' },
     { href: '/admin/projects', label: 'Projects' },
     { href: '/admin/events', label: 'Events' },
+    { href: '/admin/about', label: 'About' },
   ];
 
   return (

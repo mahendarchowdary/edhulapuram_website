@@ -14,6 +14,115 @@ export async function getNewsItems() {
   );
 }
 
+// Social links (header icons)
+export async function getSocialLinks(): Promise<Array<{ name: string; icon: string; url: string }>> {
+  try {
+    const supabase = getServiceSupabaseClient();
+    const { data, error } = await supabase
+      .from("site_social_links")
+      .select("platform,icon,url");
+    if (error) throw error;
+    const rows = (data as unknown as any[]) ?? [];
+    return rows
+      .map((r: any) => ({
+        name: String(r.platform || ""),
+        icon: String((r.icon ?? r.platform) || ""),
+        url: String(r.url ?? ""),
+      }))
+      .filter((r: any) => r.name && !!r.url);
+  } catch (e) {
+    return [];
+  }
+}
+
+// About page queries
+export async function getAboutBasicInfo() {
+  const supabase = getServiceSupabaseClient();
+  const { data, error } = await supabase
+    .from("about_basic_info")
+    .select("label,value_numeric,value_text,icon,position")
+    .order("position", { ascending: true });
+  if (error) throw error;
+  return (
+    data ?? []
+  ) as Array<{ label: string; value_numeric: number | null; value_text: string | null; icon: string | null; position: number | null }>;
+}
+
+export async function getAboutVillages() {
+  const supabase = getServiceSupabaseClient();
+  const { data, error } = await supabase
+    .from("about_villages")
+    .select("name,position")
+    .order("position", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as Array<{ name: string; position: number | null }>;
+}
+
+export async function getAboutInfrastructure() {
+  const supabase = getServiceSupabaseClient();
+  const { data: sections, error } = await supabase
+    .from("about_infrastructure_sections")
+    .select("id,section,title,icon,position")
+    .order("position", { ascending: true });
+  if (error) throw error;
+  const out: Array<{ id: string; section: string; title: string; icon: string | null; position: number | null; details: Array<{ label: string; value: string; position: number | null }> }>=[];
+  for (const s of sections ?? []) {
+    const { data: details } = await supabase
+      .from("about_infrastructure_details")
+      .select("label,value,position")
+      .eq("section_id", s.id)
+      .order("position", { ascending: true });
+    out.push({
+      id: s.id as string,
+      section: (s as any).section as string,
+      title: (s as any).title as string,
+      icon: (s as any).icon ?? null,
+      position: (s as any).position ?? null,
+      details: (details ?? []) as Array<{ label: string; value: string; position: number | null }>,
+    });
+  }
+  return out;
+}
+
+export async function getAboutSanitation() {
+  const supabase = getServiceSupabaseClient();
+  const { data: stats } = await supabase
+    .from("about_sanitation_stats")
+    .select("label,value_text,icon,position")
+    .order("position", { ascending: true });
+  const { data: vehicles } = await supabase
+    .from("about_sanitation_vehicles")
+    .select("label,quantity,position")
+    .order("position", { ascending: true });
+  return {
+    stats: (stats ?? []) as Array<{ label: string; value_text: string | null; icon: string | null; position: number | null }>,
+    vehicles: (vehicles ?? []) as Array<{ label: string; quantity: number | null; position: number | null }>,
+  };
+}
+
+export async function getAboutFinancials() {
+  const supabase = getServiceSupabaseClient();
+  const { data } = await supabase
+    .from("about_financials")
+    .select("category,metric,value_numeric,value_text,position,extra")
+    .order("position", { ascending: true });
+  // Split into revenue chart and account summary based on category
+  const revenue = (data ?? []).filter((r) => r.category === 'revenue');
+  const account = (data ?? []).filter((r) => r.category === 'account');
+  const revenueData = revenue.map((r) => ({ name: r.metric, Demand: (r.extra as any)?.demand ?? null, Collection: (r.extra as any)?.collection ?? null, Balance: (r.extra as any)?.balance ?? null }));
+  const accountSummary = account.map((r) => ({ name: r.metric, value: r.value_numeric ?? null }));
+  return { revenueData, accountSummary } as { revenueData: Array<{ name: string; Demand: number | null; Collection: number | null; Balance: number | null }>; accountSummary: Array<{ name: string; value: number | null }> };
+}
+
+export async function getAboutAssets() {
+  const supabase = getServiceSupabaseClient();
+  const { data, error } = await supabase
+    .from("about_assets")
+    .select("label,value_numeric,icon,position")
+    .order("position", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as Array<{ label: string; value_numeric: number | null; icon: string | null; position: number | null }>;
+}
 export async function getHeroSlides() {
   const supabase = getServiceSupabaseClient();
   const { data, error } = await (supabase as any)

@@ -9,6 +9,7 @@ import { NewsTickerServer } from "@/components/sections/news-ticker-server";
 import { MainNav } from "@/components/layout/main-nav";
 import { Footer } from "@/components/layout/footer";
 import { GoogleTranslateProvider } from "@/components/providers/google-translate-provider";
+import { getSocialLinks } from "@/lib/supabase/queries";
 
 const ptSans = PT_Sans({
   subsets: ["latin"],
@@ -19,11 +20,12 @@ const ptSans = PT_Sans({
 export const metadata: Metadata = {
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const socials = await getSocialLinks();
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -39,11 +41,11 @@ export default function RootLayout({
       >
         <GoogleTranslateProvider>
           <div className="relative flex min-h-dvh flex-col">
-            <Header />
+            <Header socials={socials} />
             <NewsTickerServer />
             <MainNav />
             <main className="flex-1" id="main-content">{children}</main>
-            <Footer />
+            <Footer socials={socials} />
           </div>
         </GoogleTranslateProvider>
         <Toaster />

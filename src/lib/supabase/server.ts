@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "./types";
 import { config as loadEnv } from "dotenv";
@@ -41,11 +41,22 @@ function getSupabaseCredentials() {
 
 export async function getServerSupabaseClient() {
   // Ensure env exists; the helper reads NEXT_PUBLIC_SUPABASE_* from process.env
-  getSupabaseCredentials();
+  const { url, anonKey } = getSupabaseCredentials();
+  const cookieStore = await cookies();
 
-  return createServerComponentClient<Database>({
-    // Pass the cookies function directly per auth-helpers docs
-    cookies,
+  // In Server Components we only need to read cookies; set/remove are no-ops here
+  return createServerClient<Database>(url, anonKey, {
+    cookies: {
+      get(name: string) {
+        return cookieStore.get(name)?.value;
+      },
+      set() {
+        /* no-op in Server Components */
+      },
+      remove() {
+        /* no-op in Server Components */
+      },
+    },
   });
 }
 

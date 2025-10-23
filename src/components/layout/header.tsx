@@ -251,15 +251,6 @@ const TopBarContent = ({ currentLanguage, translate, services, themeOptions, act
             />
           ))}
         </div>
-
-        <div className="flex items-center">
-          <Link
-            href="/auth/sign-in"
-            aria-label="Admin"
-            title="Admin"
-            className="inline-block h-3.5 w-3.5 rounded-full bg-emerald-500 ring-2 ring-white shadow-sm"
-          />
-        </div>
       </div>
     </div>
   );
@@ -267,7 +258,7 @@ const TopBarContent = ({ currentLanguage, translate, services, themeOptions, act
 
 // ... (rest of the code remains the same)
 
-export function Header() {
+export function Header({ socials }: { socials?: Array<{ name: string; icon: string; url: string }> }) {
   // ... (rest of the code remains the same)
   const { translate, currentLanguage } = useGoogleTranslate();
   const [activeThemeId, setActiveThemeId] = useState(themeOptions[0].id);
@@ -276,6 +267,7 @@ export function Header() {
     Facebook: "#1877F2",
     Twitter: "#1DA1F2",
     Youtube: "#FF0000",
+    Instagram: "#E4405F",
     Whatsapp: "#25D366",
     Apple: "#0F0F0F",
     Android: "#3DDC84",
@@ -315,6 +307,32 @@ export function Header() {
   const cmOfficial = keyOfficialsData.officials.find(o => o.id === 'cm-telangana');
   const cmSubDesignation = "Municipal Administration and Urban Development";
 
+  function normalizeHref(raw: string) {
+    const t = (raw || "").trim();
+    if (!t) return "#";
+    if (/^https?:\/\//i.test(t)) return t;
+    return `https://${t}`;
+  }
+
+  const effectiveSocialsRaw: Array<{ name: string; icon: string; url: string }> = (socials && socials.length > 0 ? socials : siteConfig.socials) as any;
+  const desiredOrder = ["Facebook", "Instagram", "Twitter", "Android", "Apple"] as const;
+  const effectiveSocials: Array<{ name: string; icon: string; url: string }> = (() => {
+    const seen = new Set<string>();
+    const out: Array<{ name: string; icon: string; url: string }> = [];
+    for (const s of effectiveSocialsRaw) {
+      const key = (s.name || "").trim().toLowerCase();
+      if (!key) continue;
+      if (seen.has(key)) continue;
+      // only allow requested platforms
+      const properName = s.name.trim();
+      if (!desiredOrder.includes(properName as any)) continue;
+      seen.add(key);
+      out.push({ ...s, name: properName });
+    }
+    // sort according to desired order
+    out.sort((a, b) => desiredOrder.indexOf(a.name as any) - desiredOrder.indexOf(b.name as any));
+    return out;
+  })();
 
   return (
     <>
@@ -324,19 +342,35 @@ export function Header() {
         <div className="bg-white text-foreground border-b">
           <div className="container flex h-12 items-center justify-between text-xs">
             <div className="flex items-center gap-1">
-              {siteConfig.socials.map((social) => {
+              {effectiveSocials.map((social: { name: string; icon: string; url: string }, idx: number) => {
                 const Icon = socialIcons[social.name as keyof typeof socialIcons];
                 const background = socialBrandColors[social.name] ?? "var(--primary)";
+                const href = normalizeHref(social.url || "");
+                const hasUrl = !!(social.url && social.url.trim());
                 return (
-                  <Link
-                    key={social.name}
-                    href={social.url}
-                    className="flex h-9 w-9 items-center justify-center rounded-md text-white shadow-sm transition-transform hover:scale-110 hover:brightness-110"
-                    style={{ backgroundColor: background }}
-                  >
-                    <Icon />
-                    <span className="sr-only">{social.name}</span>
-                  </Link>
+                  hasUrl ? (
+                    <a
+                      key={`${social.name}-${idx}`}
+                      href={href}
+                      className="flex h-9 w-9 items-center justify-center rounded-md text-white shadow-sm transition-transform hover:scale-110 hover:brightness-110"
+                      style={{ backgroundColor: background }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon />
+                      <span className="sr-only">{social.name}</span>
+                    </a>
+                  ) : (
+                    <div
+                      key={`${social.name}-${idx}`}
+                      className="flex h-9 w-9 items-center justify-center rounded-md text-white/70 shadow-sm"
+                      style={{ backgroundColor: background, opacity: 0.6 }}
+                      title={`${social.name} link not set`}
+                    >
+                      <Icon />
+                      <span className="sr-only">{social.name}</span>
+                    </div>
+                  )
                 );
               })}
             </div>

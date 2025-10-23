@@ -16,6 +16,33 @@ export function NewsTicker(props: NewsTickerProps) {
   const items = props.news ?? newsTickerData.news;
   const duplicatedNews = [...items, ...items];
 
+  function normalizeHref(raw: string) {
+    const trimmed = raw.trim();
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    // add https to www. or bare domains
+    return `https://${trimmed}`;
+  }
+
+  function linkify(text: string) {
+    // Match http(s), www., or bare domains like example.com/path
+    const regex = /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?)/g;
+    const parts: Array<string> = String(text).split(regex) as any;
+    return parts.map((part, i) => {
+      if (!part) return null;
+      if (regex.test(part)) {
+        const href = normalizeHref(part);
+        return (
+          <a key={i} href={href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 break-all">
+            {part}
+          </a>
+        );
+      }
+      return (
+        <span key={i} className="break-words">{part}</span>
+      );
+    });
+  }
+
   return (
     <div className="w-full border-y bg-card py-2">
       <div className="container flex flex-wrap items-center gap-3 sm:gap-4">
@@ -56,18 +83,9 @@ export function NewsTicker(props: NewsTickerProps) {
           <div className="flex ticker-container text-sm font-medium text-foreground/90">
             {duplicatedNews.map((news, index) => {
               const text = (news as any)[language] ?? news.en;
-              const parts = String(text).split(/(https?:\/\/[^\s]+)/g);
               return (
                 <p key={index} className="whitespace-nowrap px-6">
-                  {parts.map((part, i) =>
-                    /https?:\/\//.test(part) ? (
-                      <a key={i} href={part} target="_blank" rel="noreferrer" className="underline underline-offset-2">
-                        {part}
-                      </a>
-                    ) : (
-                      <span key={i}>{part}</span>
-                    )
-                  )}
+                  {linkify(String(text))}
                 </p>
               );
             })}

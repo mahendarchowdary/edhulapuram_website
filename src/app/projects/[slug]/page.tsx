@@ -1,5 +1,5 @@
-import { projectsData } from "@/app/content/data";
 import { notFound } from "next/navigation";
+import { getServerSupabaseClient } from "@/lib/supabase/server";
 import {
   Card,
   CardContent,
@@ -44,22 +44,49 @@ const statusDetails = {
   Pending: { icon: Hourglass, color: "bg-yellow-500" },
 };
 
-export async function generateStaticParams() {
-  return projectsData.projects.map((project) => ({
-    slug: project.slug,
-  }));
-}
+export const revalidate = 0;
 
-export default function ProjectDetailPage({
+export default async function ProjectDetailPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const project = projectsData.projects.find((p) => p.slug === params.slug);
-
-  if (!project) {
+  const supabase = await getServerSupabaseClient();
+  const { data: project, error } = await supabase
+    .from("projects")
+    .select("id, slug, name, description, cost, completion, status, timeline, icon")
+    .eq("slug", params.slug)
+    .single();
+  let proj = project as any | null;
+  if (error || !project) {
+    // Fallback 1: try decoded slug
+    const decoded = decodeURIComponent(params.slug);
+    const { data: alt1 } = await supabase
+      .from("projects")
+      .select("id, slug, name, description, cost, completion, status, timeline, icon")
+      .eq("slug", decoded)
+      .maybeSingle();
+    proj = alt1 ?? null;
+  }
+  if (!proj) {
+    // Fallback 2: try replacing hyphens with spaces (legacy slugs)
+    const spaced = params.slug.replace(/-/g, " ");
+    const { data: alt2 } = await supabase
+      .from("projects")
+      .select("id, slug, name, description, cost, completion, status, timeline, icon")
+      .eq("slug", spaced)
+      .maybeSingle();
+    proj = alt2 ?? null;
+  }
+  if (!proj) {
     notFound();
   }
+
+  const { data: gallery } = await supabase
+    .from("project_gallery")
+    .select("image_url, description, image_hint, position")
+    .eq("project_id", proj.id)
+    .order("position", { ascending: true });
 
   const getBadgeVariant = (status: string) => {
     switch (status.toLowerCase()) {
@@ -72,8 +99,8 @@ export default function ProjectDetailPage({
     }
   };
   
-  const Icon = iconMap[project.icon as keyof typeof iconMap] || Building;
-  const StatusIcon = statusDetails[project.status as keyof typeof statusDetails]?.icon || Clock;
+  const Icon = iconMap[(proj.icon as keyof typeof iconMap) ?? "Building"] || Building;
+  const StatusIcon = statusDetails[(proj.status as keyof typeof statusDetails) ?? "Ongoing"]?.icon || Clock;
 
   return (
     <div className="bg-background">
@@ -91,12 +118,12 @@ export default function ProjectDetailPage({
               </div>
             <div>
               <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl">
-                {project.name}
+                {proj.name}
               </h1>
               <div className="mt-2 flex items-center gap-2">
-                <Badge variant={getBadgeVariant(project.status)} className="text-sm">
+                <Badge variant={getBadgeVariant(proj.status)} className="text-sm">
                   <StatusIcon className="mr-1.5 h-4 w-4" />
-                  {project.status}
+                  {proj.status}
                 </Badge>
               </div>
             </div>
@@ -112,7 +139,7 @@ export default function ProjectDetailPage({
                 <CardTitle>Project Details</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">{project.description}</p>
+                <p className="text-muted-foreground">{proj.description ?? ""}</p>
               </CardContent>
             </Card>
 
@@ -123,14 +150,14 @@ export default function ProjectDetailPage({
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {project.gallery.map((image, index) => (
+                  {(gallery ?? []).map((image: { image_url: string; description: string | null; image_hint: string | null }, index: number) => (
                     <div key={index} className="relative aspect-video w-full overflow-hidden rounded-lg">
-                      <Image 
-                        src={image.imageUrl} 
-                        alt={image.description} 
-                        fill 
+                      <Image
+                        src={image.image_url}
+                        alt={image.description ?? proj.name}
+                        fill
                         className="object-cover transition-transform duration-300 hover:scale-105"
-                        data-ai-hint={image.imageHint}
+                        data-ai-hint={image.image_hint ?? undefined}
                       />
                     </div>
                   ))}
@@ -148,7 +175,7 @@ export default function ProjectDetailPage({
                 <div className="flex items-start gap-4">
                   <DollarSign className="h-6 w-6 text-primary mt-1" />
                   <div>
-                    <p className="font-semibold text-lg">{project.cost}</p>
+                    <p className="font-semibold text-lg">{proj.cost ?? ""}</p>
                     <p className="text-sm text-muted-foreground">Estimated Cost</p>
                   </div>
                 </div>
@@ -156,7 +183,7 @@ export default function ProjectDetailPage({
                  <div className="flex items-start gap-4">
                   <CalendarDays className="h-6 w-6 text-primary mt-1" />
                   <div>
-                    <p className="font-semibold text-lg">{project.timeline}</p>
+                    <p className="font-semibold text-lg">{proj.timeline ?? ""}</p>
                     <p className="text-sm text-muted-foreground">Project Timeline</p>
                   </div>
                 </div>
@@ -164,9 +191,9 @@ export default function ProjectDetailPage({
                 <div>
                   <div className="mb-2 flex items-center justify-between text-sm text-muted-foreground">
                     <span>Completion</span>
-                    <span>{project.completion}%</span>
+                    <span>{proj.completion ?? 0}%</span>
                   </div>
-                  <Progress value={project.completion} className="h-3" />
+                  <Progress value={(proj.completion as number | null) ?? 0} className="h-3" />
                 </div>
               </CardContent>
             </Card>
