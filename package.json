@@ -6,8 +6,8 @@
     "dev": "set NEXT_DISABLE_SWC_NATIVE_BUILDS=1 && next dev -p 9002",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
     "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
-    "build": "NODE_ENV=production next build",
-    "start": "next start",
+    "build": "cross-env NODE_ENV=production next build",
+    "start": "next start -H 0.0.0.0 -p $PORT",
     "lint": "next lint",
     "seed:supabase": "tsx scripts/seed-supabase.ts",
     "typecheck": "tsc --noEmit"
