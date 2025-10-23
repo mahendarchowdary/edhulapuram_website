@@ -29,6 +29,8 @@ export default async function AdminStaffPage({ searchParams }: { searchParams: P
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     await supabase.from("staff_members").insert({ name, designation, phone, priority });
     revalidatePath("/admin/staff");
+    revalidatePath("/");
+    revalidatePath("/staff");
     redirect("/admin/staff?success=Member%20created");
   }
 
@@ -37,6 +39,8 @@ export default async function AdminStaffPage({ searchParams }: { searchParams: P
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     await supabase.from("staff_members").delete().eq("id", id);
     revalidatePath("/admin/staff");
+    revalidatePath("/");
+    revalidatePath("/staff");
     redirect("/admin/staff?success=Member%20deleted");
   }
 

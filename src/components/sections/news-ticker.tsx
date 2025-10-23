@@ -54,14 +54,23 @@ export function NewsTicker(props: NewsTickerProps) {
         </div>
         <div className="relative flex min-w-[240px] flex-1 items-center overflow-hidden">
           <div className="flex ticker-container text-sm font-medium text-foreground/90">
-            {duplicatedNews.map((news, index) => (
-              <p
-                key={index}
-                className="whitespace-nowrap px-6"
-              >
-                {(news as any)[language] ?? news.en}
-              </p>
-            ))}
+            {duplicatedNews.map((news, index) => {
+              const text = (news as any)[language] ?? news.en;
+              const parts = String(text).split(/(https?:\/\/[^\s]+)/g);
+              return (
+                <p key={index} className="whitespace-nowrap px-6">
+                  {parts.map((part, i) =>
+                    /https?:\/\//.test(part) ? (
+                      <a key={i} href={part} target="_blank" rel="noreferrer" className="underline underline-offset-2">
+                        {part}
+                      </a>
+                    ) : (
+                      <span key={i}>{part}</span>
+                    )
+                  )}
+                </p>
+              );
+            })}
           </div>
           <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-card to-transparent" />
           <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-card to-transparent" />

@@ -53,14 +53,27 @@ export function EventsCarouselClient({ events }: { events: EventCard[] }) {
             <div className={cn('p-1 transition-transform duration-500 ease-in-out', index === current ? 'scale-105' : 'scale-90 opacity-60')}>
               <Card>
                 <CardContent className="flex aspect-video flex-col items-start justify-end p-0">
-                  <div className="relative h-full w-full overflow-hidden rounded-lg">
+                  <div className="relative h-full w-full overflow-hidden rounded-lg bg-neutral-100">
                     {event.cover_image_url ? (
-                      <Image
-                        src={event.cover_image_url}
-                        alt={event.description ?? event.title}
-                        fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
+                      <>
+                        {/* Background fill to avoid side gaps, using same image blurred */}
+                        <div
+                          aria-hidden
+                          className="absolute inset-0"
+                        >
+                          <div
+                            className="h-full w-full bg-center bg-cover blur-lg scale-110 opacity-60"
+                            style={{ backgroundImage: `url(${event.cover_image_url})` }}
+                          />
+                        </div>
+                        {/* Foreground full image without cropping */}
+                        <Image
+                          src={event.cover_image_url}
+                          alt={event.description ?? event.title}
+                          fill
+                          className="object-contain transition-transform duration-300"
+                        />
+                      </>
                     ) : null}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                     <div className="absolute bottom-0 left-0 p-4 text-white">

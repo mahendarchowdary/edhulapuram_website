@@ -108,21 +108,29 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
     const file = formData.get("cover_file") as File | null;
     if (!id || !file || file.size === 0) return;
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
-    const arrayBuffer = await file.arrayBuffer();
-    const fileBytes = new Uint8Array(arrayBuffer);
-    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
-    const fileName = `${crypto.randomUUID()}.${ext}`;
-    const { data: uploaded, error: uploadErr } = await supabase.storage.from("edhulapuram").upload(`events/${fileName}`, fileBytes, {
-      contentType: file.type || `image/${ext}`,
-      upsert: false,
-    });
-    if (uploadErr) throw uploadErr;
-    const { data: pub } = supabase.storage.from("edhulapuram").getPublicUrl(uploaded.path);
-    await supabase.from("events").update({ cover_image_url: pub.publicUrl }).eq("id", id);
-    revalidatePath("/admin/events");
-    revalidatePath("/");
-    revalidatePath("/events");
-    redirect("/admin/events?success=Cover%20updated");
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const fileBytes = new Uint8Array(arrayBuffer);
+      const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+      const fileName = `${crypto.randomUUID()}.${ext}`;
+      const { data: uploaded, error: uploadErr } = await supabase.storage
+        .from("edhulapuram")
+        .upload(`events/${fileName}`, fileBytes, {
+          contentType: file.type || `image/${ext}`,
+          upsert: false,
+        });
+      if (uploadErr) throw uploadErr;
+      const { data: pub } = supabase.storage.from("edhulapuram").getPublicUrl(uploaded.path);
+      await supabase.from("events").update({ cover_image_url: pub.publicUrl }).eq("id", id);
+      revalidatePath("/admin/events");
+      revalidatePath("/");
+      revalidatePath("/events");
+      redirect("/admin/events?success=Cover%20updated");
+    } catch (err) {
+      // Do not crash the RSC stream; show a friendly message
+      revalidatePath("/admin/events");
+      redirect("/admin/events?error=Cover%20upload%20failed.%20Please%20try%20again%20or%20use%20a%20URL.");
+    }
   }
 
   return (

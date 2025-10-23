@@ -32,6 +32,8 @@ export default async function AdminProjectsPage({ searchParams }: { searchParams
     const nextPos = (maxRows?.[0]?.position ?? 0) + 1;
     await supabase.from("projects").insert({ slug, name, description, cost, completion, status, position: nextPos });
     revalidatePath("/admin/projects");
+    revalidatePath("/");
+    revalidatePath("/projects");
     redirect("/admin/projects?success=Project%20created");
   }
 
@@ -40,6 +42,8 @@ export default async function AdminProjectsPage({ searchParams }: { searchParams
     const supabase = getServiceSupabaseClient({ useServiceRole: true });
     await supabase.from("projects").delete().eq("id", id);
     revalidatePath("/admin/projects");
+    revalidatePath("/");
+    revalidatePath("/projects");
     redirect("/admin/projects?success=Project%20deleted");
   }
 
@@ -76,6 +80,8 @@ export default async function AdminProjectsPage({ searchParams }: { searchParams
       .update({ slug, name, description, cost, completion, status })
       .eq("id", id);
     revalidatePath("/admin/projects");
+    revalidatePath("/");
+    revalidatePath("/projects");
     redirect("/admin/projects?success=Project%20updated");
   }
 
@@ -100,6 +106,8 @@ export default async function AdminProjectsPage({ searchParams }: { searchParams
     await supabase.from("project_gallery").delete().eq("project_id", project_id).eq("position", 1);
     await supabase.from("project_gallery").insert({ project_id, image_url, position: 1 });
     revalidatePath("/admin/projects");
+    revalidatePath("/");
+    revalidatePath("/projects");
     redirect("/admin/projects?success=Cover%20updated");
   }
 

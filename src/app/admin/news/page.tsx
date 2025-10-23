@@ -22,7 +22,7 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Pr
     const title_en = String(formData.get("title_en") ?? "").trim();
     const title_te = String(formData.get("title_te") ?? "").trim() || null;
     if (!title_en) return;
-    const supabase = await getServerSupabaseClient();
+    const supabase = getServiceSupabaseClient({ useServiceRole: true });
     // place after current max position
     const { data: maxRows } = await supabase
       .from("news_items")
